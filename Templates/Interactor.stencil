@@ -1,0 +1,11 @@
+{% if creator %}
+//
+// Created by {{ creator }}
+//
+{% endif %}
+
+class {{ moduleName }}Interactor: {{ moduleName }}InteractorProtocol {
+    var presenter: {{ moduleName }}InteractorOutputProtocol?
+    var localDataManager: {{ moduleName }}LocalDataManagerProtocol?
+    var remoteDataManager: {{ moduleName }}RemoteDataManagerProtocol?
+}

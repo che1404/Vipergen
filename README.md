@@ -1,2 +1,3 @@
-# viper-module-generator
-A VIPER module generation tool
+# vipernest
+
+A description of this package.

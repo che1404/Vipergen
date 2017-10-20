@@ -1,0 +1,10 @@
+{% if creator %}
+//
+// Created by {{ creator }}
+//
+{% endif %}
+
+class {{ moduleName }}Presenter: {{ moduleName }}PresenterProtocol, {{ moduleName }}InteractorOutputProtocol {
+    var view: {{ moduleName }}ViewProtocol?
+    var interactor: {{ moduleName }}InteractorProtocol?
+}

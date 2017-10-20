@@ -1,0 +1,30 @@
+{% if creator %}
+//
+// Created by {{ creator }}
+//
+{% endif %}
+
+import UIKit
+
+class {{ moduleName }}Wireframe: {{ moduleName }}WireframeProtocol {
+    func present{{ moduleName }}Module(from caller: AnyObject) {
+        // Generating module components
+        let view = {{ moduleName }}View()
+        let presenter = {{ moduleName }}Presenter()
+        let interactor = {{ moduleName }}Interactor()
+        let APIDataManager = {{ moduleName }}APIDataManager()
+        let localDataManager = {{ moduleName }}LocalDataManager()
+
+        // Connecting
+        view.presenter = presenter
+        presenter.view = view
+        presenter.wireframe = self
+        presenter.interactor = interactor
+        interactor.presenter = presenter
+        interactor.APIDataManager = APIDataManager
+        interactor.localDataManager = localDataManager
+        interactor.encryptionService = ServiceFactory.encriptionService
+
+        // Module presentation
+    }
+}

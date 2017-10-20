@@ -1,0 +1,11 @@
+{% if creator %}
+//
+// Created by {{ creator }}
+//
+{% endif %}
+
+import UIKit
+
+class {{ moduleName }}View: UIViewController, {{ moduleName }}ViewProtocol {
+    var presenter: {{ moduleName }}Presenter?
+}
