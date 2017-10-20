@@ -1,3 +1,3 @@
-# vipernest
+# vipergen
 
-A description of this package.
+A VIPER module generator written in Swift
