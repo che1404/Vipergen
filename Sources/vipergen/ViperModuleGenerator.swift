@@ -7,6 +7,7 @@
 
 import Foundation
 import Stencil
+import Files
 
 class ViperModuleGenerator {
     fileprivate let context: [String: Any]
@@ -23,10 +24,19 @@ class ViperModuleGenerator {
     }
     
     func generateModule() {
-        renderWireframe()
-        renderView()
-        renderPresenter()
-        renderInteractor()
+        guard let moduleName = context["moduleName"],
+            let moduleFolder = try? Folder.current.createSubfolderIfNeeded(withName: "\(moduleName)"),
+            let templateFolder = try? Folder(path: "Templates/default") else { return }
+        
+        templateFolder.subfolders.forEach { folder in
+            try! folder.copy(to: moduleFolder)
+        }
+
+        moduleFolder.makeFileSequence(recursive: true, includeHidden: false).forEach { templateFile in
+            guard let parentFolder = templateFile.parent else { return }
+            render(template: templateFile.path, toFile: parentFolder.path.appending("\(moduleName)\(templateFile.nameExcludingExtension).swift"))
+            try! templateFile.delete()
+        }
     }
     
     fileprivate func render(template templateName: String, toFile: String) {
@@ -38,21 +48,5 @@ class ViperModuleGenerator {
         } catch (let error) {
             print(error.localizedDescription)
         }
-    }
-    
-    fileprivate func renderWireframe() {
-        render(template: "Templates/Wireframe.stencil", toFile: "\(context["moduleName"]!)Wireframe.swift")
-    }
-    
-    fileprivate func renderView() {
-        render(template: "Templates/View.stencil", toFile: "\(context["moduleName"]!)View.swift")
-    }
-    
-    fileprivate func renderPresenter() {
-        render(template: "Templates/Presenter.stencil", toFile: "\(context["moduleName"]!)Presenter.swift")
-    }
-    
-    fileprivate func renderInteractor() {
-        render(template: "Templates/Interactor.stencil", toFile: "\(context["moduleName"]!)Interactor.swift")
     }
 }

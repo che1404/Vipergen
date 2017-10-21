@@ -7,7 +7,7 @@
 import UIKit
 
 class {{ moduleName }}Wireframe: {{ moduleName }}WireframeProtocol {
-    func present{{ moduleName }}Module(from caller: AnyObject) {
+    func present{{ moduleName }}Module(fromCaller caller: AnyObject) {
         // Generating module components
         let view = {{ moduleName }}View()
         let presenter = {{ moduleName }}Presenter()

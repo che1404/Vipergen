@@ -1,0 +1,9 @@
+{% if creator %}
+//
+// Created by {{ creator }}
+//
+{% endif %}
+
+class {{ moduleName }}LocalDataManager: {{ moduleName }}LocalDataManagerProtocol {
+
+}

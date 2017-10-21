@@ -1,0 +1,57 @@
+{% if creator %}
+//
+// Created by {{ creator }}
+//
+{% endif %}
+
+import Foundation
+
+protocol {{ moduleName }}ViewProtocol: class {
+    var presenter: {{ moduleName }}PresenterProtocol? { get set }
+    /**
+    * Add here your methods for communication PRESENTER -> VIEW
+    */
+}
+
+protocol {{ moduleName }}WireframeProtocol: class {
+    func present{{ moduleName }}Module(fromCaller caller: Any)
+    /**
+    * Add here your methods for communication PRESENTER -> WIREFRAME
+    */
+}
+
+protocol {{ moduleName }}PresenterProtocol: class {
+    var view: {{ moduleName }}ViewProtocol? { get set }
+    var interactor: {{ moduleName }}InteractorInputProtocol? { get set }
+    var wireframe: {{ moduleName }}WireframeProtocol? { get set }
+    /**
+    * Add here your methods for communication VIEW -> PRESENTER
+    */
+}
+
+protocol {{ moduleName }}InteractorOutputProtocol: class {
+    /**
+    * Add here your methods for communication INTERACTOR -> PRESENTER
+    */
+}
+
+protocol {{ moduleName }}InteractorInputProtocol: class {
+    var presenter: {{ moduleName }}InteractorOutputProtocol? { get set }
+    var APIDataManager: {{ moduleName }}APIDataManagerInputProtocol? { get set }
+    var localDataManager: {{ moduleName }}LocalDataManagerInputProtocol? { get set }
+    /**
+    * Add here your methods for communication PRESENTER -> INTERACTOR
+    */
+}
+
+protocol {{ moduleName }}RemoteDataManagerInputProtocol: class {
+    /**
+    * Add here your methods for communication INTERACTOR -> APIDATAMANAGER
+    */
+}
+
+protocol {{ moduleName }}LocalDataManagerInputProtocol: class {
+    /**
+    * Add here your methods for communication INTERACTOR -> LOCALDATAMANAGER
+    */
+}
