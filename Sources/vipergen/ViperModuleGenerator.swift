@@ -15,8 +15,10 @@ class ViperModuleGenerator {
     fileprivate var environment: Environment {
         return Environment(loader: fileSystemLoader)
     }
+    fileprivate let configuration: ViperModuleGeneratorConfiguration
     
     init(withConfiguration configuration: ViperModuleGeneratorConfiguration) {
+        self.configuration = configuration
         context = [
             "moduleName": configuration.moduleName,
             "creator": configuration.creator as Any
@@ -24,29 +26,27 @@ class ViperModuleGenerator {
     }
     
     func generateModule() {
-        guard let moduleName = context["moduleName"],
-            let moduleFolder = try? Folder.current.createSubfolderIfNeeded(withName: "\(moduleName)"),
-            let templateFolder = try? Folder(path: "Templates/default") else { return }
-        
-        templateFolder.subfolders.forEach { folder in
-            try! folder.copy(to: moduleFolder)
-        }
-
-        moduleFolder.makeFileSequence(recursive: true, includeHidden: false).forEach { templateFile in
-            guard let parentFolder = templateFile.parent else { return }
-            render(template: templateFile.path, toFile: parentFolder.path.appending("\(moduleName)\(templateFile.nameExcludingExtension).swift"))
-            try! templateFile.delete()
-        }
-    }
-    
-    fileprivate func render(template templateName: String, toFile: String) {
+        let moduleName = configuration.moduleName
         do {
-            let renderedTemplate = try environment.renderTemplate(name: templateName, context: context)
-            print(renderedTemplate)
+            let moduleFolder = try Folder.current.createSubfolderIfNeeded(withName: "\(moduleName)")
+            let templateFolder = try Folder(path: "Templates/default")
             
-            try renderedTemplate.write(toFile: toFile, atomically: false, encoding: .utf8)
+            try templateFolder.subfolders.forEach { folder in
+                try folder.copy(to: moduleFolder)
+            }
+            
+            try moduleFolder.makeFileSequence(recursive: true, includeHidden: false).forEach { templateFile in
+                guard let parentFolder = templateFile.parent else { throw NSError(domain: "generateModule", code: -1, userInfo: [NSLocalizedDescriptionKey: "The template file \(templateFile.name) doesn't have a parent\nAborting"]) }
+                try render(template: templateFile.path, toFile: parentFolder.path.appending("\(moduleName)\(templateFile.nameExcludingExtension).swift"))
+                try templateFile.delete()
+            }
         } catch (let error) {
             print(error.localizedDescription)
         }
+    }
+    
+    fileprivate func render(template templateName: String, toFile: String) throws {
+        let renderedTemplate = try environment.renderTemplate(name: templateName, context: context)
+        try renderedTemplate.write(toFile: toFile, atomically: false, encoding: .utf8)
     }
 }
