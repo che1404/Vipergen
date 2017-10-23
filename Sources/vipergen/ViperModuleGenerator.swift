@@ -43,7 +43,12 @@ class ViperModuleGenerator {
              */
             var outputFolder: Folder!
             if configuration.outputFolder != "." {
-                try FileManager.default.createDirectory(at: URL(string: "file://\(configuration.outputFolder)")!, withIntermediateDirectories: true, attributes: nil)
+                if configuration.outputFolder.starts(with: "/") {
+                    try FileManager.default.createDirectory(at: URL(string: "file://\(configuration.outputFolder)")!, withIntermediateDirectories: true, attributes: nil)
+                } else {
+                    try FileManager.default.createDirectory(at: URL(string: "file://\(Folder.current.path.appending("/\(configuration.outputFolder)"))")!, withIntermediateDirectories: true, attributes: nil)
+                }
+                
                 outputFolder = try Folder(path: configuration.outputFolder)
             } else {
                 outputFolder = Folder.current
