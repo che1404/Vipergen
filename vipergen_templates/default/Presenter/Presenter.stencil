@@ -5,6 +5,7 @@
 {% endif %}
 
 class {{ moduleName }}Presenter: {{ moduleName }}PresenterProtocol, {{ moduleName }}InteractorOutputProtocol {
+    var wireframe: {{ moduleName }}WireframeProtocol?
     var view: {{ moduleName }}ViewProtocol?
-    var interactor: {{ moduleName }}InteractorProtocol?
+    var interactor: {{ moduleName }}InteractorInputProtocol?
 }

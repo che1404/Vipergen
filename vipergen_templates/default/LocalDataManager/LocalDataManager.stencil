@@ -4,6 +4,6 @@
 //
 {% endif %}
 
-class {{ moduleName }}LocalDataManager: {{ moduleName }}LocalDataManagerProtocol {
+class {{ moduleName }}LocalDataManager: {{ moduleName }}LocalDataManagerInputProtocol {
 
 }

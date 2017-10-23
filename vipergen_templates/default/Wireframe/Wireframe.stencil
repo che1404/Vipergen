@@ -7,12 +7,12 @@
 import UIKit
 
 class {{ moduleName }}Wireframe: {{ moduleName }}WireframeProtocol {
-    func present{{ moduleName }}Module(fromCaller caller: AnyObject) {
+    func present{{ moduleName }}Module(fromCaller caller: Any) {
         // Generating module components
         let view = {{ moduleName }}View()
         let presenter = {{ moduleName }}Presenter()
         let interactor = {{ moduleName }}Interactor()
-        let APIDataManager = {{ moduleName }}APIDataManager()
+        let remoteDataManager = {{ moduleName }}RemoteDataManager()
         let localDataManager = {{ moduleName }}LocalDataManager()
 
         // Connecting
@@ -21,9 +21,8 @@ class {{ moduleName }}Wireframe: {{ moduleName }}WireframeProtocol {
         presenter.wireframe = self
         presenter.interactor = interactor
         interactor.presenter = presenter
-        interactor.APIDataManager = APIDataManager
+        interactor.remoteDataManager = remoteDataManager
         interactor.localDataManager = localDataManager
-        interactor.encryptionService = ServiceFactory.encriptionService
 
         // Module presentation
     }

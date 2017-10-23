@@ -37,7 +37,7 @@ protocol {{ moduleName }}InteractorOutputProtocol: class {
 
 protocol {{ moduleName }}InteractorInputProtocol: class {
     var presenter: {{ moduleName }}InteractorOutputProtocol? { get set }
-    var APIDataManager: {{ moduleName }}APIDataManagerInputProtocol? { get set }
+    var remoteDataManager: {{ moduleName }}RemoteDataManagerInputProtocol? { get set }
     var localDataManager: {{ moduleName }}LocalDataManagerInputProtocol? { get set }
     /**
     * Add here your methods for communication PRESENTER -> INTERACTOR
@@ -46,7 +46,7 @@ protocol {{ moduleName }}InteractorInputProtocol: class {
 
 protocol {{ moduleName }}RemoteDataManagerInputProtocol: class {
     /**
-    * Add here your methods for communication INTERACTOR -> APIDATAMANAGER
+    * Add here your methods for communication INTERACTOR -> REMOTEDATAMANAGER
     */
 }
 

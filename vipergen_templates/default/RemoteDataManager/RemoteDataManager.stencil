@@ -1,0 +1,10 @@
+
+{% if creator %}
+//
+// Created by {{ creator }}
+//
+{% endif %}
+
+class {{ moduleName }}RemoteDataManager: {{ moduleName }}RemoteDataManagerInputProtocol {
+
+}

@@ -4,8 +4,8 @@
 //
 {% endif %}
 
-class {{ moduleName }}Interactor: {{ moduleName }}InteractorProtocol {
+class {{ moduleName }}Interactor: {{ moduleName }}InteractorInputProtocol {
     var presenter: {{ moduleName }}InteractorOutputProtocol?
-    var localDataManager: {{ moduleName }}LocalDataManagerProtocol?
-    var remoteDataManager: {{ moduleName }}RemoteDataManagerProtocol?
+    var localDataManager: {{ moduleName }}LocalDataManagerInputProtocol?
+    var remoteDataManager: {{ moduleName }}RemoteDataManagerInputProtocol?
 }
