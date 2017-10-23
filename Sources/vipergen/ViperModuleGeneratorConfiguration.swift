@@ -9,9 +9,7 @@ import Foundation
 
 struct ViperModuleGeneratorConfiguration {
     var moduleName: String
-    var creator: String?
-    
-    init(moduleName name: String) {
-        self.moduleName = name
-    }
+    var template: String
+    var creator: String
+    var outputFolder: String
 }
