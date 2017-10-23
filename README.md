@@ -27,3 +27,8 @@ Options:
     --creator [default: John Doe] - The name of the creator
     --output [default: .] - The output directory
 ```
+
+## Uninstallation
+```shell
+$ make uninstall
+```
