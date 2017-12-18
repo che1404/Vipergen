@@ -1,23 +1,23 @@
 //
-//  ViperModuleGenerator.swift
-//  viper-module-generator
+//  Vipergen.swift
+//  A VIPER module generator
 //
 //  Created by Roberto on 20/10/17.
 //
 
 import Foundation
-import Stencil
 import Files
-import PathKit
 
-class ViperModuleGenerator {
+class Vipergen {
     static let vipergenTemplatesFolderName = "vipergen_templates"
-    fileprivate let context: [String: Any]
-    fileprivate let configuration: ViperModuleGeneratorConfiguration
+    fileprivate let templateContext: [String: Any]
+    fileprivate let configuration: VipergenConfiguration
+    fileprivate var templateRenderer: TemplateRenderer?
     
-    init(withConfiguration configuration: ViperModuleGeneratorConfiguration) {
+    init(withConfiguration configuration: VipergenConfiguration, templateRenderer: TemplateRenderer) {
         self.configuration = configuration
-        context = [
+        self.templateRenderer = templateRenderer
+        templateContext = [
             "moduleName": configuration.moduleName,
             "creator": configuration.creator as Any
         ]
@@ -30,7 +30,7 @@ class ViperModuleGenerator {
             // Abort if the template selected by the user doesn't exitst in the templates folder
             let templateName = configuration.template
             if templateName != "default" {
-                let templateExistsInTemplatesFolder = try Folder(path: Bundle.main.bundlePath).subfolder(named: ViperModuleGenerator.vipergenTemplatesFolderName).containsSubfolder(named: templateName)
+                let templateExistsInTemplatesFolder = try Folder(path: Bundle.main.bundlePath).subfolder(named: Vipergen.vipergenTemplatesFolderName).containsSubfolder(named: templateName)
                 if !templateExistsInTemplatesFolder {
                     print("The template \"\(templateName)\" doesn't exist in the templates folder. Please copy the template named \"\(templateName)\" to the templates folder")
                     return
@@ -58,7 +58,7 @@ class ViperModuleGenerator {
             let moduleFolder = try outputFolder.createSubfolderIfNeeded(withName: "\(moduleName)")
             
             // Get the reference to the output folder
-            let templateFolder = try Folder(path: Bundle.main.bundlePath.appending("/\(ViperModuleGenerator.vipergenTemplatesFolderName)/\(configuration.template)"))
+            let templateFolder = try Folder(path: Bundle.main.bundlePath.appending("/\(Vipergen.vipergenTemplatesFolderName)/\(configuration.template)"))
             
             // Copy the contents of the template to the output folder
             try templateFolder.subfolders.forEach { folder in
@@ -86,13 +86,6 @@ class ViperModuleGenerator {
     fileprivate func render(template templateName: String, toFile: String) throws {
         let moduleName = configuration.moduleName
         let templatesPath = configuration.outputFolder.appending("/\(moduleName)")
-        
-        // Prepare the Stencil environment
-        let fileSystemLoader = FileSystemLoader(paths: [Path(templatesPath)])
-        let environment = Environment(loader: fileSystemLoader)
-        
-        // Render the template to a string, and write it to the output file path
-        let renderedTemplate = try environment.renderTemplate(name: templateName, context: context)
-        try renderedTemplate.write(toFile: toFile, atomically: false, encoding: .utf8)
+        try templateRenderer?.renderTemplate(withName: templateName, fromTemplatesPath: templatesPath, outputPath: toFile, templateContext: templateContext)
     }
 }

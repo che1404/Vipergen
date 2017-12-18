@@ -7,9 +7,9 @@ let vipergenCommand = command (
     Option<String>("output", ".", flag: nil, description: "The output directory", validator: nil)
 ) { (moduleName: String, template: String, creator: String, output: String) in
     
-    let configuration = ViperModuleGeneratorConfiguration(moduleName: moduleName, template: template, creator: creator, outputFolder: output)
-    let viperModuleGenerator = ViperModuleGenerator(withConfiguration: configuration)
-    viperModuleGenerator.generateModule()
+    let configuration = VipergenConfiguration(moduleName: moduleName, template: template, creator: creator, outputFolder: output)
+    let vipergen = Vipergen(withConfiguration: configuration, templateRenderer: TemplateRendererStencil())
+    vipergen.generateModule()
     
 }
 

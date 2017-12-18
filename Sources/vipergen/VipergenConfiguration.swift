@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ViperModuleGeneratorConfiguration {
+struct VipergenConfiguration {
     var moduleName: String
     var template: String
     var creator: String
