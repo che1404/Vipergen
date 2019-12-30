@@ -66,18 +66,19 @@ class Vipergen {
             }
             
             // For each template file in the output folder structure, replace it with rendered file
-            try moduleFolder.makeFileSequence(recursive: true, includeHidden: false).forEach { templateFile in
+            try moduleFolder.files.recursive.forEach { templateFile in
                 guard let parentFolder = templateFile.parent else { throw NSError(domain: "generateModule", code: -1, userInfo: [NSLocalizedDescriptionKey: "The template file \(templateFile.name) doesn't have a parent\nAborting"]) }
                 try render(template: templateFile.path, toFile: parentFolder.path.appending("\(moduleName)\(templateFile.nameExcludingExtension).swift"))
                 try templateFile.delete()
             }
         } catch (let error) {
-            switch error {
-            case Folder.PathError.invalid(let stringError):
-                print("Invalid path error: \(stringError)")
-            case FileSystem.Item.OperationError.deleteFailed(let item):
-                print("Error deleting: \(item.name)")
-            default:
+            if let error = error as? LocationError {
+                print(error.reason, error.path)
+            } else if let error = error as? WriteError {
+                print(error.reason, error.path)
+            } else if let error = error as? ReadError {
+                print(error.reason, error.path)
+            } else {
                 print(error.localizedDescription)
             }
         }

@@ -15,7 +15,7 @@ install: build
 	cp -r -f $(TEMPLATES_FOLDER_NAME)/* $(PREFIX)/bin/$(TEMPLATES_FOLDER_NAME)
 
 build:
-	swift build --disable-sandbox -c release -Xswiftc -static-stdlib
+	swift build --disable-sandbox -c release
 
 uninstall:
 	rm -f $(INSTALL_PATH)

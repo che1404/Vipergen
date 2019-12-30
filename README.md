@@ -32,3 +32,10 @@ Options:
 ```shell
 $ make uninstall
 ```
+
+## Building
+Regenerate the xcodeproj 
+```shell
+$ swift package generate-xcodeproj
+```
+
